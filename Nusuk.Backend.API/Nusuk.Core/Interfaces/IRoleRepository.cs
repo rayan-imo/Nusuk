@@ -2,6 +2,4 @@
 
 namespace Nusuk.Core.Interfaces;
 
-public interface IUserRepository :IBaseRepository<User>
-{
-}
+public interface IRoleRepository:IBaseRepository<Role> { }

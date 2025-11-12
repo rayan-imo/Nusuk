@@ -1,15 +1,14 @@
 ﻿using Nusuk.Core.Entities;
 
-namespace Nusuk.Core.Interfaces
+namespace Nusuk.Core.Interfaces;
+
+public interface IUnitOfWork : IDisposable
 {
-    public interface IUnitOfWork : IDisposable
-    {
-    
-        IUserRepository UsersRepository { get; }
+
+    IUserRepository UsersRepository { get; }
 
 
 
-        int Complete();
+    int Complete();
 
-    }
 }

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Nusuk.Core.Interfaces;
 using Nusuk.Infrastructure.Data;
+using Nusuk.Infrastructure.Repositories;
 
 namespace Nusuk.Infrastructure;
 
@@ -14,10 +15,12 @@ public static class DependencyInjection
         // DbContext
         services.AddDbContext<NusukDbContext>(options =>
         options.UseSqlServer(config.GetConnectionString("DefaultConnection"),
-        b=>b.MigrationsAssembly(typeof(NusukDbContext).Assembly.FullName))
+        b => b.MigrationsAssembly(typeof(NusukDbContext).Assembly.FullName))
         );
 
-
+        // UoW
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
 
         return services;
