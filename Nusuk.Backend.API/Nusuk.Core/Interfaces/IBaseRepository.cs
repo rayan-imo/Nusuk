@@ -17,11 +17,12 @@ public interface IBaseRepository<T> where T : class
     //Async
     Task<T> GetByIdAsync(Guid id, string[] includes = null);
     Task<T> GetByIdAsync(Guid id);
+    Task<T?> GetByItemAsync(Expression<Func<T, bool>> filter);
     Task<IEnumerable<T>> GetAllAsync();
     Task<T> FindAsync(Expression<Func<T, bool>> predicate, string[] includes = null);
     Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, string[] includes = null);
-    Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, int take, int skip);
-    Task<IEnumerable<T>> FindAllAsync(
+    Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate);
+    Task<IQueryable<T>> FindAllAsync(
         Expression<Func<T, bool>> predicate,
         int? take = null,
         int? skip = null,

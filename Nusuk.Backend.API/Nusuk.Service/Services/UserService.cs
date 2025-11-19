@@ -1,8 +1,8 @@
 ﻿using Nusuk.Core.Entities;
 using Nusuk.Core.Interfaces;
-using Nusuk.Service.IServices;
+using Nusuk.Services.IServices;
 
-namespace Nusuk.Service.Services;
+namespace Nusuk.Services.Services;
 
 public class UserService(IUnitOfWork _uow) : IUserService
 {

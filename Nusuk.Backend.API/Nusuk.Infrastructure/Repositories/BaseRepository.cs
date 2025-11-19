@@ -44,16 +44,16 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
        Expression<Func<T, object>> orederBy = null, string orderByDirection = OrderBy.Ascending)
     {
         IQueryable<T> query = _context.Set<T>().Where(predicate);
-        if(take.HasValue)
+        if (take.HasValue)
             query = query.Take(take.Value);
 
         if (skip.HasValue)
             query = query.Skip(skip.Value);
 
-        if(orederBy != null)
+        if (orederBy != null)
         {
-            if (orderByDirection==OrderBy.Ascending)
-                query= query.OrderBy(orederBy) ;
+            if (orderByDirection == OrderBy.Ascending)
+                query = query.OrderBy(orederBy);
             else
                 query = query.OrderBy(orederBy);
         }
@@ -91,7 +91,7 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
             foreach (var include in includes)
                 query = query.Include(include);
 
-        return await query.FirstOrDefaultAsync(x=>x.Id==Id);
+        return await query.FirstOrDefaultAsync(x => x.Id == Id);
     }
     public async Task<T> FindAsync(Expression<Func<T, bool>> predicate, string[] includes = null)
     {
@@ -168,6 +168,36 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
             entity.DeletedAt = DateTime.UtcNow;
 
         _context.UpdateRange(entities);
+    }
+    public async Task<T?> GetByItemAsync(Expression<Func<T, bool>>? predicate = null, Expression<Func<T, object>>? orderBy = null, bool ascending = true)
+    {
+
+        IQueryable<T> query = _context.Set<T>().Where(predicate);
+
+        if (orderBy != null)
+        {
+            query = ascending ?
+                query.OrderBy(orderBy) :
+                query.OrderByDescending(orderBy);
+        }
+
+
+        return await query.FirstOrDefaultAsync(predicate);
+    }
+
+    public Task<T?> GetByItemAsync(Expression<Func<T, bool>> filter)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
+    {
+        throw new NotImplementedException();
+    }
+
+    Task<IQueryable<T>> IBaseRepository<T>.FindAllAsync(Expression<Func<T, bool>> predicate, int? take, int? skip, Expression<Func<T, object>> orderBy, string orderByDirection)
+    {
+        throw new NotImplementedException();
     }
 }
 

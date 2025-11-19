@@ -1,6 +1,6 @@
 ﻿using Nusuk.Core.Entities;
 
-namespace Nusuk.Service.IServices;
+namespace Nusuk.Services.IServices;
 
 public interface IUserService
 {

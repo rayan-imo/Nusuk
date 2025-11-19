@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Nusuk.Core.Entities;
-using Nusuk.Service.IServices;
-using Nusuk.Service.Services;
+using Nusuk.Services.IServices;
+using Nusuk.Services.Services;
 
 namespace Nusuk.ApI.Controllers
 {

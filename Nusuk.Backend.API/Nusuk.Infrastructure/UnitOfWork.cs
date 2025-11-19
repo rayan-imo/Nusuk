@@ -18,7 +18,7 @@ public class UnitOfWork(NusukDbContext _context) : IUnitOfWork
     public ITripRepository _tripRepository;
     public ITripPackageRepository _tripPackageRepository;
     public IUserServiceRepository _userServiceRepository;
-
+    public IUserOtpRepository _userOtpRepository;
     public IUserRepository UsersRepository => new UserRepository(_context);
     public IBookingRepository BookingRepository=>new BookingRepository(_context);
     public ICaravanRepository CaravanRepository=>new CaravanRepository(_context);
@@ -30,6 +30,7 @@ public class UnitOfWork(NusukDbContext _context) : IUnitOfWork
     public ITripRepository TripRepository=>new TripRepository(_context);    
     public ITripPackageRepository TripPackageRepository =>new TripPackageRepository(_context);
     public IUserServiceRepository UserServiceRepository =>new UserServiceRepository(_context);
+    public IUserOtpRepository UserOtpRepository => new UserOtpRepository(_context);
 
 
 

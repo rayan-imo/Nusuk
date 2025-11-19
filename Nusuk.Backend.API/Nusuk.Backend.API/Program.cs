@@ -1,5 +1,5 @@
 using Nusuk.Infrastructure;
-using Nusuk.Service;
+using Nusuk.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

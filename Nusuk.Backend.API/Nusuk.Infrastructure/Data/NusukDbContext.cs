@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Nusuk.Core.Entities;
+using Nusuk.Services.Otp;
 using System.Data.Common;
 
 namespace Nusuk.Infrastructure.Data;
@@ -21,5 +22,6 @@ public class NusukDbContext : DbContext
     public DbSet<Service> Services { get; set; }
     public DbSet<Service> ServicesDetail { get; set; }
     public DbSet<UserServiceInfo> UsersService { get; set; }
+    public DbSet<UserOtp> Otps { get; set; }
    
 }

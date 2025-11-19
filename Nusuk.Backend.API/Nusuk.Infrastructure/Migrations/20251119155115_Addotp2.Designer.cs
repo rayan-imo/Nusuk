@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nusuk.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Nusuk.Infrastructure.Data;
 namespace Nusuk.Infrastructure.Migrations
 {
     [DbContext(typeof(NusukDbContext))]
-    partial class NusukDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251119155115_Addotp2")]
+    partial class Addotp2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -500,7 +503,7 @@ namespace Nusuk.Infrastructure.Migrations
                     b.ToTable("UsersService");
                 });
 
-            modelBuilder.Entity("Nusuk.Services.Otp.UserOtp", b =>
+            modelBuilder.Entity("Nusuk.Services.OtpService.UserOtp", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
