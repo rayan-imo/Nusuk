@@ -5,6 +5,6 @@ namespace Nusuk.Core.Enums;
 public enum AmountMethod
 {
     CreditCard,
-    Cassh
+    Cash
 
 }

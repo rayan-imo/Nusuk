@@ -2,7 +2,7 @@
 
 public enum PackageLevel
 {
-    VIp,
+    VIP,
     Standard,
     Economy
 }

@@ -169,7 +169,8 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
 
         _context.UpdateRange(entities);
     }
-    public async Task<T?> GetByItemAsync(Expression<Func<T, bool>>? predicate = null, Expression<Func<T, object>>? orderBy = null, bool ascending = true)
+    public async Task<T?> GetByItemAsync(Expression<Func<T, bool>>? predicate = null, 
+        Expression<Func<T, object>>? orderBy = null, bool ascending = true)
     {
 
         IQueryable<T> query = _context.Set<T>().Where(predicate);
@@ -185,19 +186,23 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
         return await query.FirstOrDefaultAsync(predicate);
     }
 
-    public Task<T?> GetByItemAsync(Expression<Func<T, bool>> filter)
+    public async Task<T> GetByItemAsync(Expression<Func<T, bool>> predicate)
     {
-        throw new NotImplementedException();
+        IQueryable<T> query = _context.Set<T>().Where(predicate);
+
+        return await query.FirstOrDefaultAsync(predicate);
     }
 
-    public Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
+    public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate)
     {
-        throw new NotImplementedException();
+        IQueryable<T> query = _context.Set<T>().Where(predicate);
+
+        return await query.ToListAsync();
     }
 
-    Task<IQueryable<T>> IBaseRepository<T>.FindAllAsync(Expression<Func<T, bool>> predicate, int? take, int? skip, Expression<Func<T, object>> orderBy, string orderByDirection)
-    {
-        throw new NotImplementedException();
-    }
+   
+
+  
 }
+
 

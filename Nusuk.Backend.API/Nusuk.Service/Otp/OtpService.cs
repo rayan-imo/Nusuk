@@ -6,10 +6,14 @@ using Nusuk.Services.Otp;
 namespace Nusuk.Services.Otp;
 
 public class OtpService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
-    EmailService _emailService) :IOtpService
+    EmailService _emailService) : IOtpService
 {
     public async Task<UserOtp> SendOtpAsync(string email)
     {
+        if (string.IsNullOrEmpty(email))
+        {
+            throw new Exception("Email is required");
+        }
         var user = await _uow.UsersRepository.GetByItemAsync(u => u.Email == email);
         if (user == null)
         {
@@ -44,14 +48,14 @@ public class OtpService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
         && o.IsUSed == false);
         var otp = otps.OrderByDescending(o => o.CreatedAt).FirstOrDefault();
 
+        var hashcode = _passwordHasher.HashPassword(code);
 
-
-        if (otp == null || otp.Code != code || DateTime.Now > otp.ExpireDate)
+        if (otp == null || otp.Code != hashcode || DateTime.Now > otp.ExpireDate)
         {
             return false;
         }
         otp.IsUSed = true;
-        await _uow.UserOtpRepository.UpdateAsync(otp);
+        await _uow.UserOtpRepository.AddAsync(otp);
         await _uow.CompleteAsync();
         return true;
     }

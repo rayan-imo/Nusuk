@@ -22,12 +22,6 @@ public interface IBaseRepository<T> where T : class
     Task<T> FindAsync(Expression<Func<T, bool>> predicate, string[] includes = null);
     Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, string[] includes = null);
     Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate);
-    Task<IQueryable<T>> FindAllAsync(
-        Expression<Func<T, bool>> predicate,
-        int? take = null,
-        int? skip = null,
-        Expression<Func<T, object>> orderBy = null,
-        string orderByDirection = OrderBy.Ascending);
     Task AddAsync(T entity);
     Task AddRangeAsync(IEnumerable<T> entities);
     Task UpdateAsync(T entity);
