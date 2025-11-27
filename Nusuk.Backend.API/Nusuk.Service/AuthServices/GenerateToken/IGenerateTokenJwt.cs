@@ -2,5 +2,5 @@
 
 public interface  IGenerateTokenJwt
 {
-    public string GenerateAccessToken(Guid userId, Guid roleId, string Name,string? email = null);
+    public string GenerateAccessToken(Guid userId, Guid? roleId, string Name,string? email = null);
 }

@@ -3,7 +3,7 @@ using Nusuk.Core.Enums;
 
 namespace Nusuk.Core.Entities;
 
-public class Booking:BaseEntity
+public class Booking: BaseEntity
 {
      public decimal TotalAmount {  get; set; }
     public AmountMethod AmountMethod { get; set; }

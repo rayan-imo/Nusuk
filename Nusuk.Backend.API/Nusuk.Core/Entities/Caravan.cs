@@ -10,7 +10,7 @@ public class Caravan:BaseEntity
     public string? DepartureCity { get; set; }
     public bool IsActive {  get; set; }
     public bool IsCompleted {  get; set; }
-    public Booking Booking { get; set; }
+    public Booking? Booking { get; set; }
     public List<TripPackage> JournyPackages { get; set; }
 
 

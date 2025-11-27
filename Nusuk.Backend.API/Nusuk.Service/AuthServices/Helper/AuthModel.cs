@@ -7,7 +7,7 @@ public class AuthModel
     public string Name { get; set; }
    // public string LastName { get; set; }
     public string Email { get; set; }
-    public Guid RoleId{ get; set; }
+    public Guid? RoleId{ get; set; }
     public string Token { get; set; }
     public DateTime ExpiresOn { get; set; }
 }

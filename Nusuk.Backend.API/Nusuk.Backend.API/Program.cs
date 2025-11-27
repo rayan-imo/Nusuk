@@ -1,5 +1,6 @@
 using Nusuk.Infrastructure;
 using Nusuk.Services;
+using Quizzy.Backend.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder .Services.AddSwaggerExtension();
 
 var configuration = builder.Configuration;
 

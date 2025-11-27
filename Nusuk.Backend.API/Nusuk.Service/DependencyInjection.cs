@@ -24,6 +24,7 @@ namespace Nusuk.Services
         public static IServiceCollection AddService(this IServiceCollection services, IConfiguration config)
         {
             //
+            services.Configure<JWT>(config.GetSection("JWT"));
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IOtpService, OtpService>();
             services.AddScoped<IGenerateTokenJwt, GenerateTokenJwt>();
@@ -35,6 +36,7 @@ namespace Nusuk.Services
         }
         public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration config)
         {
+           
             var jwt = config.GetSection("JWT").Get<JWT>();
             services.AddAuthentication(option =>
             {
@@ -53,7 +55,6 @@ namespace Nusuk.Services
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Secret))
                 };
             });
-            services.AddSingleton(jwt);
             return services;
         }
     }

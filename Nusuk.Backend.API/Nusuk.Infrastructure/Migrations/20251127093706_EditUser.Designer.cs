@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nusuk.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Nusuk.Infrastructure.Data;
 namespace Nusuk.Infrastructure.Migrations
 {
     [DbContext(typeof(NusukDbContext))]
-    partial class NusukDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251127093706_EditUser")]
+    partial class EditUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,7 +75,7 @@ namespace Nusuk.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BookingId")
+                    b.Property<Guid>("BookingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -247,7 +250,7 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<string>("ProviderName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ServiceDetailId")
+                    b.Property<Guid>("ServiceDetailId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -256,7 +259,7 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserServiceId")
+                    b.Property<Guid>("UserServiceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -451,7 +454,7 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserServiceId")
+                    b.Property<Guid>("UserServiceId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -550,7 +553,9 @@ namespace Nusuk.Infrastructure.Migrations
                 {
                     b.HasOne("Nusuk.Core.Entities.Booking", "Booking")
                         .WithMany("Caravan")
-                        .HasForeignKey("BookingId");
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Booking");
                 });
@@ -589,11 +594,15 @@ namespace Nusuk.Infrastructure.Migrations
                 {
                     b.HasOne("Nusuk.Core.Entities.ServiceDetail", "ServiceDetail")
                         .WithMany("Services")
-                        .HasForeignKey("ServiceDetailId");
+                        .HasForeignKey("ServiceDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Nusuk.Core.Entities.UserServiceInfo", "UserService")
                         .WithMany("Services")
-                        .HasForeignKey("UserServiceId");
+                        .HasForeignKey("UserServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ServiceDetail");
 
@@ -632,7 +641,9 @@ namespace Nusuk.Infrastructure.Migrations
 
                     b.HasOne("Nusuk.Core.Entities.UserServiceInfo", "UserService")
                         .WithMany()
-                        .HasForeignKey("UserServiceId");
+                        .HasForeignKey("UserServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Booking");
 

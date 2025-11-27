@@ -8,12 +8,12 @@ using System.Text;
 
 namespace Nusuk.Services.AuthServices.GenerateToken;
 
-public class GenerateTokenJwt(IOptions<JWT> _jwt) :IGenerateTokenJwt
+public class GenerateTokenJwt(IOptions<JWT> jwt) :IGenerateTokenJwt
 {
-    public string GenerateAccessToken(Guid userId, Guid role,string Name, string? email = null)
+    private readonly IOptions<JWT> _jwt = jwt;
+    public string GenerateAccessToken(Guid userId, Guid? role,string Name, string? email = null)
     {
         //  var secret = configuration.GetSection("JWT").Get<JWT>();
-
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Value.Secret));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

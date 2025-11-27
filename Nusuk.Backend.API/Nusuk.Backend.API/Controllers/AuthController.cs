@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Nusuk.Backend.API.Dtos.Otp;
 using Nusuk.Services.AuthServices.Helper;
-using Nusuk.Services.AuthServices.Service;
 using Nusuk.Services.AuthServices.Services;
 using Nusuk.Services.Otp;
 
@@ -13,7 +11,7 @@ namespace Nusuk.Backend.API.Controllers;
 public class AuthController(IAuthService _authService, IOtpService _otpService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<ActionResult<AuthModel>> RegisterAsync(RegisterModel model)
+    public async Task<IActionResult> RegisterAsync([FromBody]RegisterModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -30,7 +28,7 @@ public class AuthController(IAuthService _authService, IOtpService _otpService) 
         return Ok(result);
     }
     [HttpPost("login")]
-    public async Task<ActionResult<AuthModel>> LogInAsync(LogInModel model)
+    public async Task<IActionResult> LogInAsync(LogInModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -59,7 +57,7 @@ public class AuthController(IAuthService _authService, IOtpService _otpService) 
 
         if (result is null)
         {
-            return BadRequest($"Faild to Send OTP to{model.Email}");
+            return BadRequest($"Faild to Send code to{model.Email}");
         }
 
         return Ok(result);
@@ -73,7 +71,7 @@ public class AuthController(IAuthService _authService, IOtpService _otpService) 
             return BadRequest(ModelState);
         }
 
-        var result = await _otpService.VerfiyCodeAsync(model.Email,model.Code);
+        var result = await _otpService.VerfiyCodeAsync(model.Email, model.Code);
 
         if (!result)
         {
@@ -83,7 +81,7 @@ public class AuthController(IAuthService _authService, IOtpService _otpService) 
         return Ok(result);
     }
 
-    [HttpPost("changepassword")]
+    [HttpPost("change-password")]
     public async Task<IActionResult> ChagePasswordAsync(ChangePasswordModel model)
     {
 

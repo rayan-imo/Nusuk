@@ -30,7 +30,7 @@ public class AuthService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
         {
             Email = model.Email,
             Name = model.Name,
-            Password = model.Password,
+            Password = haspassword,
         };
         await _uow.UsersRepository.AddAsync(user);
 

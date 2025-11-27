@@ -1,38 +1,58 @@
 ﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 
-namespace Nusuk.Services.Otp;
-
-public class EmailService
+namespace Nusuk.Services.Otp
 {
-    private readonly IConfiguration _config;
-
-    public EmailService(IConfiguration config)
+    public class EmailService
     {
-        _config = config;
-    }
+        private readonly IConfiguration _config;
 
-    public async Task SendEmailAsync(string toEmail, string subject, string body)
-    {
-        var email = new MimeMessage();
-        email.From.Add(new MailboxAddress("Nusuk App", _config["EmailSettings:SenderEmail"]));
-        email.To.Add(new MailboxAddress("", toEmail));
-        email.Subject = subject;
-        email.Body = new TextPart("html")
+        public EmailService(IConfiguration config)
         {
-            Text = body
-        };
+            _config = config;
+        }
 
-        using var smtp = new SmtpClient();
-        await smtp.ConnectAsync(_config["EmailSettings:SmtpServer"],
-                                int.Parse(_config["EmailSettings:Port"]),
-                                MailKit.Security.SecureSocketOptions.StartTls);
+        public async Task SendEmailAsync(string toEmail, string subject, string body)
+        {
+            // إنشاء رسالة الإيميل
+            var email = new MimeMessage();
+            email.From.Add(new MailboxAddress("Nusuk App", _config["EmailSettings:SenderEmail"]));
+            email.To.Add(MailboxAddress.Parse(toEmail));
+            email.Subject = subject;
+            email.Body = new TextPart("html") { Text = body };
 
-        await smtp.AuthenticateAsync(_config["EmailSettings:SenderEmail"],
-                                     _config["EmailSettings:SenderPassword"]);
+            using var smtp = new SmtpClient();
 
-        await smtp.SendAsync(email);
-        await smtp.DisconnectAsync(true);
+            try
+            {
+                // الاتصال بخادم Gmail
+                await smtp.ConnectAsync(
+                    _config["EmailSettings:SmtpServer"],
+                    int.Parse(_config["EmailSettings:Port"]),
+                    SecureSocketOptions.StartTls
+                );
+
+                // المصادقة باستخدام App Password
+                await smtp.AuthenticateAsync(
+                    _config["EmailSettings:SenderEmail"],
+                    _config["EmailSettings:SenderPassword"]
+                );
+
+                // إرسال الرسالة
+                await smtp.SendAsync(email);
+            }
+            catch (Exception ex)
+            {
+                // تسجيل
+                Console.WriteLine($"Error sending email: {ex.Message}");
+                throw;
+            }
+            finally
+            {
+                await smtp.DisconnectAsync(true);
+            }
+        }
     }
 }
