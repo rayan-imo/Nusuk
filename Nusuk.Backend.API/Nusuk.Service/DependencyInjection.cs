@@ -1,11 +1,10 @@
 ﻿
 
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Nusuk.Core.Entities;
 using Nusuk.Services.AuthServices.GenerateToken;
 using Nusuk.Services.AuthServices.Hasher;
 using Nusuk.Services.AuthServices.Helper;
@@ -14,8 +13,8 @@ using Nusuk.Services.AuthServices.Services;
 using Nusuk.Services.IServices;
 using Nusuk.Services.Otp;
 using Nusuk.Services.Services;
-using System.Collections;
 using System.Text;
+
 
 namespace Nusuk.Services
 {
@@ -31,12 +30,16 @@ namespace Nusuk.Services
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<EmailService>();
+          //  services.AddFluentValidationAutoValidation();
+           // services.AddFluentValidationClientsideAdapters();
+           // services.AddValidatorsFromAssembly(typeof(DeleteUserValidator).Assembly); 
+
 
             return services;
         }
         public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration config)
         {
-           
+
             var jwt = config.GetSection("JWT").Get<JWT>();
             services.AddAuthentication(option =>
             {

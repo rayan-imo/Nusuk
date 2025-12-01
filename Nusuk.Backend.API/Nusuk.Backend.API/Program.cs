@@ -16,6 +16,7 @@ var configuration = builder.Configuration;
 
 builder.Services.AddInfrastructure(configuration);
 builder.Services.AddService(configuration);
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -23,7 +24,7 @@ var app = builder.Build();
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
+app.UseCors();
 
 app.UseHttpsRedirection();
 

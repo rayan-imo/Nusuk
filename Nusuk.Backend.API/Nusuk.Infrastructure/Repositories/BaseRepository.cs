@@ -101,7 +101,6 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
                 query = query.Include(include);
         return await query.SingleOrDefaultAsync(predicate);
     }
-
     public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, string[] includes = null)
     {
         IQueryable<T> query = _context.Set<T>();

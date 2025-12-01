@@ -1,5 +1,6 @@
 ﻿using Nusuk.Core.Consts;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Nusuk.Core.Interfaces;
 
@@ -20,6 +21,7 @@ public interface IBaseRepository<T> where T : class
     Task<T?> GetByItemAsync(Expression<Func<T, bool>> filter);
     Task<IEnumerable<T>> GetAllAsync();
     Task<T> FindAsync(Expression<Func<T, bool>> predicate, string[] includes = null);
+
     Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate, string[] includes = null);
     Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> predicate);
     Task AddAsync(T entity);
