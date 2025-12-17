@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Nusuk.Core.Common.Pagination;
 using Nusuk.Core.Entities;
 using Nusuk.Core.Interfaces;
 using Nusuk.Services.Dtos;
@@ -10,10 +11,11 @@ namespace Nusuk.Services.Services
 {
     public class PackageService(IUnitOfWork _uow) : IPackageService
     {
-        public async Task<IEnumerable<Package>> GetAllAsync()
+        public async Task<PagedResult<Package>> GetAllAsync(PaginationParameter pagination)
         {
             var packages = await _uow.PackageRepository.GetAllAsync();
-            return packages.Where(u => u.DeletedAt == null);
+            var query= packages.Where(u => u.DeletedAt == null).ToList();
+            return await PaginationHelper.ToPagedAsync(query, pagination.PageNumber, pagination.PageSize);
 
         }
 
@@ -38,7 +40,7 @@ namespace Nusuk.Services.Services
             {
                 Id = Guid.NewGuid(),
                 Name = packagedto.Name,
-                Descrption = packagedto.Description,
+                Description = packagedto.Description,
                 TotalPrice = packagedto.TotalPrice,
                 IsActive = packagedto.IsActive,
                 Level = packagedto.Level
@@ -51,12 +53,17 @@ namespace Nusuk.Services.Services
         public async Task<Guid> UpdateAsync(Guid Id, PackageDto packagedto)
         {
             var package = await _uow.PackageRepository.GetByIdAsync(Id);
-            if (package is null)
+            if (package is null || package.DeletedAt is not null)
             {
                 throw new KeyNotFoundException("package not found");
             }
             await new PackageValidator().ValidateAndThrowAsync(packagedto);
             
+            package.Name=packagedto.Name;
+            package.Description=packagedto.Description;
+            package.Level=packagedto.Level;
+            package.IsActive=packagedto.IsActive;
+            package.TotalPrice=packagedto.TotalPrice;
 
             await _uow.PackageRepository.UpdateAsync(package);
             await _uow.CompleteAsync();

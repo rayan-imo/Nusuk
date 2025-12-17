@@ -2,4 +2,9 @@
 
 namespace Nusuk.Core.Interfaces;
 
-public interface ITripRepository:IBaseRepository<Trip> { }
+public interface ITripRepository : IBaseRepository<Trip>
+{
+    public Task<IEnumerable<object>> GetTripsWithDetailsAsync();
+
+
+}

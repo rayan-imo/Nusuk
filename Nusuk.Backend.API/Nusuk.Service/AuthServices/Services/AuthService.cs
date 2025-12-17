@@ -52,18 +52,18 @@ public class AuthService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
     public async Task<AuthModel> LogInAsync(LogInModel model)
     {
         var authmodel = new AuthModel();
-        var user = await _uow.UsersRepository.GetByItemAsync(u => u.Name == model.Name);
+        var user = await _uow.UsersRepository.GetByItemAsync(u => u.Email == model.Email);
 
         if (user == null)
         {
-            authmodel.Message = "Name or Password is incorrect";
+            authmodel.Message = "Email or Password is incorrect";
             return authmodel;
 
         }
         var IsValidPassword = _passwordHasher.VerifyHashedPassword(user.Password, model.Password);
         if (!IsValidPassword)
         {
-            authmodel.Message = "Name or Password is incorrect";
+            authmodel.Message = "Email or Password is incorrect";
             return authmodel;
         }
         var jwt = _generateTokenJwt.GenerateAccessToken(user.Id, user.RoleId, user.Name, user.Email);

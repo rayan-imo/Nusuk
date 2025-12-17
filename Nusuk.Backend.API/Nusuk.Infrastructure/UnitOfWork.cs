@@ -8,17 +8,17 @@ namespace Nusuk.Infrastructure;
 
 public class UnitOfWork(NusukDbContext _context) : IUnitOfWork
 {
-    private IUserRepository _userRepository;
-    private IBookingRepository _bookingRepository;
-    private ICaravanRepository _caravanRepository;
-    public IPackageRepository _packageRepository;
-    public IRoleRepository _roleRepository;
-    public IServiceRepository _serviceRepository;
-    public IServiceDetailRepository _serviceDetailRepository;
-    public ITripRepository _tripRepository;
-    public ITripPackageRepository _tripPackageRepository;
-    public IUserServiceRepository _userServiceRepository;
-    public IUserOtpRepository _userOtpRepository;
+    private IUserRepository? _userRepository;
+    private IBookingRepository? _bookingRepository;
+    private ICaravanRepository? _caravanRepository;
+    public IPackageRepository? _packageRepository;
+    public IRoleRepository? _roleRepository;
+    public IServiceRepository? _serviceRepository;
+    public IServiceDetailRepository? _serviceDetailRepository;
+    public ITripRepository? _tripRepository;
+    public ITripPackageRepository? _tripPackageRepository;
+    public IUserServiceRepository? _userServiceRepository;
+    public IUserOtpRepository? _userOtpRepository;
     public IUserRepository UsersRepository => new UserRepository(_context);
     public IBookingRepository BookingRepository=>new BookingRepository(_context);
     public ICaravanRepository CaravanRepository=>new CaravanRepository(_context);
@@ -32,7 +32,7 @@ public class UnitOfWork(NusukDbContext _context) : IUnitOfWork
     public IUserServiceRepository UserServiceRepository =>new UserServiceRepository(_context);
     public IUserOtpRepository UserOtpRepository => new UserOtpRepository(_context);
 
-
+    IServiceDetailRepository IUnitOfWork.ServiceDetailRepository => throw new NotImplementedException();
 
     public int Complete()
     {

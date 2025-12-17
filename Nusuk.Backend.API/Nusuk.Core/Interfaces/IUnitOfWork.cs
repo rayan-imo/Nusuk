@@ -6,14 +6,15 @@ public interface IUnitOfWork : IDisposable
 {
 
     IUserRepository UsersRepository { get; }
-    IBookingRepository BookingRepository {  get; }
-    ICaravanRepository CaravanRepository {  get; }
-    IPackageRepository PackageRepository {  get; }
-    IRoleRepository RoleRepository {  get; }
-    IServiceRepository ServiceRepository {  get; }
-    ITripRepository TripRepository {  get; }
-    ITripPackageRepository TripPackageRepository {  get; }
-    IUserServiceRepository UserServiceRepository {  get; }
+    IBookingRepository BookingRepository { get; }
+    ICaravanRepository CaravanRepository { get; }
+    IPackageRepository PackageRepository { get; }
+    IRoleRepository RoleRepository { get; }
+    IServiceRepository ServiceRepository { get; }
+    ITripRepository TripRepository { get; }
+    ITripPackageRepository TripPackageRepository { get; }
+    IUserServiceRepository UserServiceRepository { get; }
+    IServiceDetailRepository ServiceDetailRepository { get; }
     IUserOtpRepository UserOtpRepository { get; }
 
 

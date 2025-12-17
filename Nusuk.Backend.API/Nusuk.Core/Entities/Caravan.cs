@@ -8,10 +8,10 @@ public class Caravan:BaseEntity
     public DateTime? DepartureDate {  get; set; }
     public DateTime? ReturnDate {  get; set; }
     public string? DepartureCity { get; set; }
-    public bool IsActive {  get; set; }
     public bool IsCompleted {  get; set; }
-    public Booking? Booking { get; set; }
-    public List<TripPackage> JournyPackages { get; set; }
+    public List<Booking> Bookings { get; set; }
+    public TripPackage?  TripPackage { get; set; }
+    public Guid? TripPackageId { get; set; }
 
 
 }

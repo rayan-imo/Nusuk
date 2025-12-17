@@ -13,13 +13,9 @@ public class User : BaseEntity
     public string? Nationality { get; set; }
     public string? Gendre {  get; set; }
     public DateTime? DateOfBrith { get; set; }
-    public UserServiceInfo? UserService { get; set; }
-    public Booking? Booking { get; set; }
-    public List<Role> Roles { get; set; }
-    public Guid RoleId { get; set; }
-
-
-
-
+    public List<UserServiceInfo?> UserService { get; set; }
+    public List<Booking> Booking { get; set; }
+    public Role? Role { get; set; }
+    public Guid? RoleId { get; set; }
 
 }

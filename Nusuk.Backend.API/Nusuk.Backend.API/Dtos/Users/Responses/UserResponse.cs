@@ -6,7 +6,7 @@ namespace Nusuk.Backend.API.Dtos.Users.Responses
     {
         public Guid Id { get; set; }
         public required string Email { get; set; }
-       public Guid RoleId { get; set; }
+       public Guid? RoleId { get; set; }
         public required string  Name { get; set; }
         public string? Phone { get; set; }
         public static UserResponse Transform(User user)

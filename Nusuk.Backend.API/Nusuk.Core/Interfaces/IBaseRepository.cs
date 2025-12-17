@@ -16,6 +16,7 @@ public interface IBaseRepository<T> where T : class
 
 
     //Async
+    Task<T?> GetByIdWithAllIncludes(Guid id);
     Task<T> GetByIdAsync(Guid id, string[] includes = null);
     Task<T> GetByIdAsync(Guid id);
     Task<T?> GetByItemAsync(Expression<Func<T, bool>> filter);
@@ -29,4 +30,6 @@ public interface IBaseRepository<T> where T : class
     Task UpdateAsync(T entity);
     Task DeleteAsync(T entity);
     Task DeleteRangeAsync(IEnumerable<T> entities);
+    public Task<bool> AnyAsync(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes);
+    public Task<bool> AnyAsync(Expression<Func<T, bool>>? filter = null);
 }

@@ -27,4 +27,8 @@
     <ProjectReference Include="..\Nusuk.Service\Nusuk.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\Trips\Responses\" />
+  </ItemGroup>
+
 </Project>

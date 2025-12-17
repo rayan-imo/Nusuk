@@ -4,10 +4,11 @@ namespace Nusuk.Core.Entities;
 
 public class TripPackage : BaseEntity
 {
-    public List<Package> Packages { get; set; }
-    public List<Trip> Trips { get; set; }
-    public Caravan? Caravan { get; set; }
-    public Guid Carvan {  get; set; }
+    public Package? Package { get; set; }
+    public Trip? Trip { get; set; }
+    public List<Caravan> Caravan { get; set; }
+    public Guid TripId {  get; set; }
+    public Guid PackageId {  get; set; }
 
 
 }

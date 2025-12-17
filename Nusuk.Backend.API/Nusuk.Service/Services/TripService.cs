@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Nusuk.Core.Common.Pagination;
 using Nusuk.Core.Entities;
 using Nusuk.Core.Interfaces;
 using Nusuk.Services.Dtos;
@@ -9,13 +11,18 @@ namespace Nusuk.Services.Services;
 
 public class TripService(IUnitOfWork _uow):ITripService
 {
-    public async Task<IEnumerable<Trip>> GetAllAsync()
+    public async Task<PagedResult<Trip>> GetAllAsync(PaginationParameter pagination)
     {
         var trips = await _uow.TripRepository.GetAllAsync();
-        return trips.Where(u => u.DeletedAt == null);
+        var query= trips.Where(u => u.DeletedAt == null).ToList();
+        return await PaginationHelper.ToPagedAsync(query, pagination.PageNumber, pagination.PageSize);
 
     }
-
+    public async Task<IEnumerable<object>> GetTripWithDetails()
+    {
+        var trips=await _uow.TripRepository.GetTripsWithDetailsAsync();
+        return trips;
+    }
     public async Task<Trip> GetByIdAsync(Guid id)
     {
 
@@ -25,7 +32,7 @@ public class TripService(IUnitOfWork _uow):ITripService
 
         var trip = await _uow.TripRepository.GetByIdAsync(id);
 
-        if (trip == null)
+        if (trip == null || trip.DeletedAt is not null)
             throw new KeyNotFoundException($"Trip with ID '{id}' was not found.");
 
         return trip;

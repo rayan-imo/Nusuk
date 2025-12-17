@@ -12,8 +12,8 @@ using Nusuk.Infrastructure.Data;
 namespace Nusuk.Infrastructure.Migrations
 {
     [DbContext(typeof(NusukDbContext))]
-    [Migration("20251119155115_Addotp2")]
-    partial class Addotp2
+    [Migration("20251211210556_RenameTotalAmountToPriceInBooking")]
+    partial class RenameTotalAmountToPriceInBooking
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,8 +52,11 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
 
-                    b.Property<decimal>("TotalAmount")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -66,6 +69,12 @@ namespace Nusuk.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CaravanId");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Bookings");
                 });
 
@@ -73,9 +82,6 @@ namespace Nusuk.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BookingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -96,9 +102,6 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<DateTime?>("DepartureDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("bit");
 
@@ -108,6 +111,9 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<DateTime?>("ReturnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid?>("TripPackageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -116,7 +122,7 @@ namespace Nusuk.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
+                    b.HasIndex("TripPackageId");
 
                     b.ToTable("Caravans");
                 });
@@ -139,23 +145,17 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Descrption")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
-
-                    b.Property<Guid>("JournyPackageId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ServiceDetailId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -168,10 +168,6 @@ namespace Nusuk.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("JournyPackageId");
-
-                    b.HasIndex("ServiceDetailId");
-
                     b.ToTable("Packages");
                 });
 
@@ -179,9 +175,6 @@ namespace Nusuk.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("BookingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -205,14 +198,7 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Roles");
                 });
@@ -250,23 +236,13 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<string>("ProviderName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ServiceDetailId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserServiceId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ServiceDetailId");
-
-                    b.HasIndex("UserServiceId");
 
                     b.ToTable("Service");
                 });
@@ -295,8 +271,14 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -305,6 +287,10 @@ namespace Nusuk.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PackageId");
+
+                    b.HasIndex("ServiceId");
 
                     b.ToTable("ServiceDetail");
                 });
@@ -336,14 +322,8 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ServiceDetailId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("TripPackagesId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -356,10 +336,6 @@ namespace Nusuk.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceDetailId");
-
-                    b.HasIndex("TripPackagesId");
-
                     b.ToTable("Trips");
                 });
 
@@ -367,12 +343,6 @@ namespace Nusuk.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CaravanId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("Carvan")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -387,6 +357,12 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<Guid?>("DeletedBy")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TripId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -395,7 +371,9 @@ namespace Nusuk.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CaravanId");
+                    b.HasIndex("PackageId");
+
+                    b.HasIndex("TripId");
 
                     b.ToTable("TripPackages");
                 });
@@ -404,9 +382,6 @@ namespace Nusuk.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BookingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -445,7 +420,7 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
+                    b.Property<Guid?>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -454,14 +429,9 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UserServiceId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("UserServiceId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -487,23 +457,28 @@ namespace Nusuk.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserServiceInfoId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserServiceInfoId");
+                    b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("UsersService");
                 });
 
-            modelBuilder.Entity("Nusuk.Services.OtpService.UserOtp", b =>
+            modelBuilder.Entity("Nusuk.Services.Otp.UserOtp", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -549,118 +524,25 @@ namespace Nusuk.Infrastructure.Migrations
                     b.ToTable("Otps");
                 });
 
-            modelBuilder.Entity("Nusuk.Core.Entities.Caravan", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.Booking", "Booking")
-                        .WithMany("Caravan")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-                });
-
-            modelBuilder.Entity("Nusuk.Core.Entities.Package", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.TripPackage", "JournyPackage")
-                        .WithMany("Packages")
-                        .HasForeignKey("JournyPackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nusuk.Core.Entities.Service", "ServiceDetail")
-                        .WithMany()
-                        .HasForeignKey("ServiceDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("JournyPackage");
-
-                    b.Navigation("ServiceDetail");
-                });
-
-            modelBuilder.Entity("Nusuk.Core.Entities.Role", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.Booking", null)
-                        .WithMany("Role")
-                        .HasForeignKey("BookingId");
-
-                    b.HasOne("Nusuk.Core.Entities.User", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Nusuk.Core.Entities.Service", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.ServiceDetail", "ServiceDetail")
-                        .WithMany("Services")
-                        .HasForeignKey("ServiceDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nusuk.Core.Entities.UserServiceInfo", "UserService")
-                        .WithMany("Services")
-                        .HasForeignKey("UserServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ServiceDetail");
-
-                    b.Navigation("UserService");
-                });
-
-            modelBuilder.Entity("Nusuk.Core.Entities.Trip", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.ServiceDetail", null)
-                        .WithMany("Journies")
-                        .HasForeignKey("ServiceDetailId");
-
-                    b.HasOne("Nusuk.Core.Entities.TripPackage", "TripPackages")
-                        .WithMany("Trips")
-                        .HasForeignKey("TripPackagesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TripPackages");
-                });
-
-            modelBuilder.Entity("Nusuk.Core.Entities.TripPackage", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.Caravan", "Caravan")
-                        .WithMany("JournyPackages")
-                        .HasForeignKey("CaravanId");
-
-                    b.Navigation("Caravan");
-                });
-
-            modelBuilder.Entity("Nusuk.Core.Entities.User", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.Booking", "Booking")
-                        .WithMany("User")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Nusuk.Core.Entities.UserServiceInfo", "UserService")
-                        .WithMany()
-                        .HasForeignKey("UserServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("UserService");
-                });
-
-            modelBuilder.Entity("Nusuk.Core.Entities.UserServiceInfo", b =>
-                {
-                    b.HasOne("Nusuk.Core.Entities.UserServiceInfo", null)
-                        .WithMany("UserServices")
-                        .HasForeignKey("UserServiceInfoId");
-                });
-
             modelBuilder.Entity("Nusuk.Core.Entities.Booking", b =>
                 {
+                    b.HasOne("Nusuk.Core.Entities.Caravan", "Caravan")
+                        .WithMany("Bookings")
+                        .HasForeignKey("CaravanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nusuk.Core.Entities.Role", "Role")
+                        .WithMany("Bookings")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Nusuk.Core.Entities.User", "User")
+                        .WithMany("Booking")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Caravan");
 
                     b.Navigation("Role");
@@ -670,33 +552,121 @@ namespace Nusuk.Infrastructure.Migrations
 
             modelBuilder.Entity("Nusuk.Core.Entities.Caravan", b =>
                 {
-                    b.Navigation("JournyPackages");
+                    b.HasOne("Nusuk.Core.Entities.TripPackage", "TripPackage")
+                        .WithMany("Caravan")
+                        .HasForeignKey("TripPackageId");
+
+                    b.Navigation("TripPackage");
                 });
 
             modelBuilder.Entity("Nusuk.Core.Entities.ServiceDetail", b =>
                 {
-                    b.Navigation("Journies");
+                    b.HasOne("Nusuk.Core.Entities.Package", "Package")
+                        .WithMany("ServiceDetail")
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Services");
+                    b.HasOne("Nusuk.Core.Entities.Service", "Service")
+                        .WithMany("ServiceDetails")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Package");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Nusuk.Core.Entities.TripPackage", b =>
                 {
-                    b.Navigation("Packages");
+                    b.HasOne("Nusuk.Core.Entities.Package", "Package")
+                        .WithMany("TripPackages")
+                        .HasForeignKey("PackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Trips");
+                    b.HasOne("Nusuk.Core.Entities.Trip", "Trip")
+                        .WithMany("TripPackages")
+                        .HasForeignKey("TripId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Package");
+
+                    b.Navigation("Trip");
                 });
 
             modelBuilder.Entity("Nusuk.Core.Entities.User", b =>
                 {
-                    b.Navigation("Roles");
+                    b.HasOne("Nusuk.Core.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Nusuk.Core.Entities.UserServiceInfo", b =>
                 {
+                    b.HasOne("Nusuk.Core.Entities.Service", "Services")
+                        .WithMany("UserService")
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Nusuk.Core.Entities.User", "User")
+                        .WithMany("UserService")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Services");
 
-                    b.Navigation("UserServices");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Nusuk.Core.Entities.Caravan", b =>
+                {
+                    b.Navigation("Bookings");
+                });
+
+            modelBuilder.Entity("Nusuk.Core.Entities.Package", b =>
+                {
+                    b.Navigation("ServiceDetail");
+
+                    b.Navigation("TripPackages");
+                });
+
+            modelBuilder.Entity("Nusuk.Core.Entities.Role", b =>
+                {
+                    b.Navigation("Bookings");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Nusuk.Core.Entities.Service", b =>
+                {
+                    b.Navigation("ServiceDetails");
+
+                    b.Navigation("UserService");
+                });
+
+            modelBuilder.Entity("Nusuk.Core.Entities.Trip", b =>
+                {
+                    b.Navigation("TripPackages");
+                });
+
+            modelBuilder.Entity("Nusuk.Core.Entities.TripPackage", b =>
+                {
+                    b.Navigation("Caravan");
+                });
+
+            modelBuilder.Entity("Nusuk.Core.Entities.User", b =>
+                {
+                    b.Navigation("Booking");
+
+                    b.Navigation("UserService");
                 });
 #pragma warning restore 612, 618
         }

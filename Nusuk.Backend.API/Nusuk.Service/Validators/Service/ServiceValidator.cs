@@ -1,10 +1,5 @@
 ﻿using FluentValidation;
 using Nusuk.Services.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nusuk.Services.Validators.Service
 {
@@ -21,6 +16,6 @@ namespace Nusuk.Services.Validators.Service
                 .GreaterThan(0).WithMessage("يجب أن يكون السعر أكبر من الصفر ");
         }
     }
-    
-    
+
+
 }

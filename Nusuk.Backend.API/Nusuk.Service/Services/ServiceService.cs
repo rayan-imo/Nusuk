@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Nusuk.Core.Common.Pagination;
 using Nusuk.Core.Entities;
 using Nusuk.Core.Interfaces;
 using Nusuk.Services.Dtos;
@@ -10,10 +11,11 @@ namespace Nusuk.Services.Services
 {
     public class ServiceService(IUnitOfWork _uow) : IServiceService
     {
-        public async Task<IEnumerable<Service>> GetAllAsync()
+        public async Task<PagedResult<Service>> GetAllAsync(PaginationParameter pagination)
         {
             var services = await _uow.ServiceRepository.GetAllAsync();
-            return services.Where(u => u.DeletedAt == null);
+            var query = services.Where(u => u.DeletedAt == null).ToList();
+            return await PaginationHelper.ToPagedAsync(query, pagination.PageNumber, pagination.PageSize);
 
         }
 
@@ -26,7 +28,7 @@ namespace Nusuk.Services.Services
 
             var service = await _uow.ServiceRepository.GetByIdAsync(Id);
 
-            if (service == null)
+            if (service == null || service.DeletedAt is not null)
                 throw new KeyNotFoundException($"Service with ID '{Id}' was not found.");
 
             return service;

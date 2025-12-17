@@ -9,6 +9,7 @@ namespace Nusuk.Infrastructure.Repositories;
 
 public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T : BaseEntity
 {
+
     public IEnumerable<T> GetAll()
     {
         return _context.Set<T>().ToList();
@@ -75,6 +76,30 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
     }
 
     // Asynchronous 
+    public async Task<T?> GetByIdWithAllIncludes(Guid id)
+    {
+        var entityType = _context.Model.FindEntityType(typeof(T));
+        if (entityType == null) return null;
+
+        IQueryable<T> query = _context.Set<T>();
+
+        // Dynamically include all navigation properties
+        foreach (var navigation in entityType.GetNavigations())
+        {
+            query = query.Include(navigation.Name);
+        }
+
+        var keyProperty = entityType.FindPrimaryKey()?.Properties.FirstOrDefault();
+        if (keyProperty == null) return null;
+
+        var parameter = Expression.Parameter(typeof(T), "x");
+        var property = Expression.Property(parameter, keyProperty.Name);
+        var constant = Expression.Constant(id);
+        var equality = Expression.Equal(property, constant);
+        var lambda = Expression.Lambda<Func<T, bool>>(equality, parameter);
+
+        return await query.FirstOrDefaultAsync(lambda);
+    }
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
@@ -200,7 +225,39 @@ public class BaseRepository<T>(DbContext _context) : IBaseRepository<T> where T 
     }
 
    
+     public async Task<bool> AnyAsync(Expression<Func<T, bool>>? filter = null)
+     {
 
+        IQueryable<T> query = _context.Set<T>().Where(filter);
+
+        bool exist;
+
+        if (filter != null)
+        {
+
+            exist = await query.AnyAsync(filter);
+        }
+        else
+        {
+            exist = await query.AnyAsync();
+        }
+
+        return false;
+    }
+    public async Task<bool> AnyAsync(Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[] includes)
+    {
+        IQueryable<T> query = _context.Set<T>().Where(filter);
+
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        var exist = await query.AnyAsync(filter);
+
+        return exist;
+    }
   
 }
 

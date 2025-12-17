@@ -25,10 +25,15 @@ namespace Nusuk.Services
             //
             services.Configure<JWT>(config.GetSection("JWT"));
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITripService, TripService>();
+            services.AddScoped<IPackageService, PackageService>();
+            services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<IOtpService, OtpService>();
             services.AddScoped<IGenerateTokenJwt, GenerateTokenJwt>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<ICaravanService, CaravanService>();
+            services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<EmailService>();
           //  services.AddFluentValidationAutoValidation();
            // services.AddFluentValidationClientsideAdapters();

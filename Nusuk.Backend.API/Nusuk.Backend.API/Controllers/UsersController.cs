@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Nusuk.Backend.API.Dtos.Users.Responses;
+using Nusuk.Core.Common.Pagination;
 using Nusuk.Services.Dtos;
 using Nusuk.Services.IServices;
 using Nusuk.Services.Otp;
@@ -14,23 +15,23 @@ namespace Nusuk.ApI.Controllers
     public class UsersController(IUserService _userService) : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<UserResponse>> GetAllUser()
+        public async Task<ActionResult<UserResponse>> GetAll([FromQuery] PaginationParameter pagination)
         {
-            var result = await _userService.GetAllAsync();
-            if (result is null || !result.Any())
+            var result = await _userService.GetAllAsync(pagination);
+            if (result is null || !result.Items.Any())
             {
                 return NotFound($"No users found");
             }
 
-            return Ok(result?.Select(UserResponse.Transform));
+            return Ok(result?.Items.Select(UserResponse.Transform));
         }
-        [HttpGet("userId")]
-        public async Task<ActionResult<UserResponse>> GetByIdAsync(Guid Id)
+        [HttpGet("id")]
+        public async Task<ActionResult<UserResponse>> GetByIdAsync(Guid id)
         {
-            var result = await _userService.GetByIdAsync(Id);
-            if (result is null || Id == Guid.Empty)
+            var result = await _userService.GetByIdAsync(id);
+            if (result is null || id == Guid.Empty)
             {
-                return NotFound($"User with ID {Id} not found");
+                return NotFound($"User with ID {id} not found");
             }
             return UserResponse.Transform(result);
         }
@@ -40,32 +41,32 @@ namespace Nusuk.ApI.Controllers
             var userId = await _userService.AddAsync(userdto);
             return Ok(userId);
         }
-        [HttpPut("{Id}")]
-        public async Task<ActionResult<UserResponse>> UpdateAsync(Guid Id, UserDto userdto)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserResponse>> UpdateAsync(Guid id, UserDto userdto)
         {
-            if (Id == Guid.Empty)
+            if (id == Guid.Empty)
                 return BadRequest("Invalid ID");
 
-            var user = await _userService.GetByIdAsync(Id);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null)
                 return NotFound("User not found");
 
 
             await new UserValidator().ValidateAndThrowAsync(userdto);
-            var userId = await _userService.UpdateAsync(Id, userdto);
+            var userId = await _userService.UpdateAsync(id, userdto);
             return Ok(userId);
         }
-        [HttpDelete("{Id}")]
-        public async Task<ActionResult> DeleteAsync(Guid Id)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            if (Id == Guid.Empty)
+            if (id == Guid.Empty)
                 return BadRequest("Invalid ID");
 
-            var user = await _userService.GetByIdAsync(Id);
+            var user = await _userService.GetByIdAsync(id);
             if (user == null)
                 return NotFound("User not found");
 
-            await _userService.DeleteAsync(Id);
+            await _userService.DeleteAsync(id);
             return Ok();
 
         }

@@ -6,28 +6,28 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Nusuk.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class EditUser : Migration
+    public partial class FixRelationBetweenCaravanAndTripPackage : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_Bookings_BookingId",
-                table: "Users");
+                name: "FK_Caravans_TripPackages_TripPackageId",
+                table: "Caravans");
 
             migrationBuilder.AlterColumn<Guid>(
-                name: "BookingId",
-                table: "Users",
+                name: "TripPackageId",
+                table: "Caravans",
                 type: "uniqueidentifier",
                 nullable: true,
                 oldClrType: typeof(Guid),
                 oldType: "uniqueidentifier");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Bookings_BookingId",
-                table: "Users",
-                column: "BookingId",
-                principalTable: "Bookings",
+                name: "FK_Caravans_TripPackages_TripPackageId",
+                table: "Caravans",
+                column: "TripPackageId",
+                principalTable: "TripPackages",
                 principalColumn: "Id");
         }
 
@@ -35,12 +35,12 @@ namespace Nusuk.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_Bookings_BookingId",
-                table: "Users");
+                name: "FK_Caravans_TripPackages_TripPackageId",
+                table: "Caravans");
 
             migrationBuilder.AlterColumn<Guid>(
-                name: "BookingId",
-                table: "Users",
+                name: "TripPackageId",
+                table: "Caravans",
                 type: "uniqueidentifier",
                 nullable: false,
                 defaultValue: new Guid("00000000-0000-0000-0000-000000000000"),
@@ -49,10 +49,10 @@ namespace Nusuk.Infrastructure.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_Bookings_BookingId",
-                table: "Users",
-                column: "BookingId",
-                principalTable: "Bookings",
+                name: "FK_Caravans_TripPackages_TripPackageId",
+                table: "Caravans",
+                column: "TripPackageId",
+                principalTable: "TripPackages",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

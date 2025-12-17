@@ -9,6 +9,6 @@ public class Service:BaseEntity
     public decimal? Price { get; set; }
     public bool? IsIncluded { get; set; }
     public string? ProviderName {  get; set; }
-    public ServiceDetail? ServiceDetail { get; set; }
-    public UserServiceInfo? UserService { get; set; }
+    public List<ServiceDetail> ServiceDetails { get; set; }
+    public List< UserServiceInfo> UserService { get; set; }
 }

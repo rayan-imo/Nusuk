@@ -10,7 +10,7 @@ public class Trip:BaseEntity
     public TripType Type {  get; set; }
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public TripPackage TripPackages { get; set; } = null!;
+    public List<TripPackage> TripPackages { get; set; } = null!;
 
 
 
