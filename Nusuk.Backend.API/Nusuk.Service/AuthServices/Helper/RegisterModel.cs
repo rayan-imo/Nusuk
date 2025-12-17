@@ -18,7 +18,7 @@ public class RegisterModel
            ErrorMessage = "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.")]
     public required string Password { get; set; }
   
-     public  Guid? RoleId{ get; set; }
+    
 
 
 }

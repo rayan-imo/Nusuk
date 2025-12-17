@@ -34,7 +34,7 @@ public class AuthService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
         };
         await _uow.UsersRepository.AddAsync(user);
 
-        var jwt = _generateTokenJwt.GenerateAccessToken(user.Id, user.RoleId, user.Name, user.Email); // add userame to the claim
+        var jwt = _generateTokenJwt.GenerateAccessToken(user.Id, user.Name, user.Email); // add userame to the claim
                                                                                                       //  var role=await _uow.RoleRepository.GetByItemAsync(r=>r.Id==model.Role.Id);
         await _uow.CompleteAsync();
 
@@ -43,7 +43,7 @@ public class AuthService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
             Email = model.Email,
             Name = model.Name,
             IsAuthenticated = true,
-            RoleId = user.RoleId,
+         
             Token = jwt,
             Message = "Registration successful"
         };
@@ -66,14 +66,14 @@ public class AuthService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
             authmodel.Message = "Email or Password is incorrect";
             return authmodel;
         }
-        var jwt = _generateTokenJwt.GenerateAccessToken(user.Id, user.RoleId, user.Name, user.Email);
+        var jwt = _generateTokenJwt.GenerateAccessToken(user.Id,user.Name, user.Email);
 
         return new AuthModel
         {
             Email = user.Email,
             Name = user.Name,
             IsAuthenticated = true,
-            RoleId = user.RoleId,
+         
             Token = jwt,
             Message = "LogIn successful"
         };

@@ -10,6 +10,6 @@ public class UserOtp:BaseEntity
 
     public string Code { get; set;}
     public bool IsUSed {  get; set; }
-    public DateTime ExpireDate {  get; set; }
+    public DateTime ExpireDate { get; set; } = DateTime.Now.AddDays(1);
 
 }

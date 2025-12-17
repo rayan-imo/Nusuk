@@ -27,12 +27,12 @@ public class OtpService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
         {
             UserId = user.Id,
             Email = email,
-            Code = hashcode,
+            Code =hashcode,
             IsUSed = false,
             CreatedAt = DateTime.UtcNow,
             ExpireDate = DateTime.Now.AddMinutes(5)
         };
-        await _uow.UserOtpRepository.UpdateAsync(result);
+        await _uow.UserOtpRepository.AddAsync(result);
         await _uow.CompleteAsync();
         return result;
     }
@@ -48,14 +48,14 @@ public class OtpService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
         && o.IsUSed == false);
         var otp = otps.OrderByDescending(o => o.CreatedAt).FirstOrDefault();
 
-        var hashcode = _passwordHasher.HashPassword(code);
+        var verfiy = _passwordHasher.VerifyHashedPassword(otp.Code,code);
 
-        if (otp == null || otp.Code != hashcode || DateTime.Now > otp.ExpireDate)
+        if (otp == null || !verfiy || DateTime.Now > otp.ExpireDate)
         {
             return false;
         }
         otp.IsUSed = true;
-        await _uow.UserOtpRepository.AddAsync(otp);
+        await _uow.UserOtpRepository.UpdateAsync(otp);
         await _uow.CompleteAsync();
         return true;
     }
