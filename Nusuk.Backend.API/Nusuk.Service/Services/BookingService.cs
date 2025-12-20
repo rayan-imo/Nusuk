@@ -43,18 +43,25 @@ public class BookingService(IUnitOfWork _uow) : IBookingService
         if (caravan == null)
         {
             throw new Exception("Caravan not found");
+
+        }
+          var package=await _uow.PackageRepository.GetByItemAsync(x=>x.Name==bookingDto.PckageName);
+        if (package == null)
+        {
+            throw new Exception("Package not found");
+
         }
         await new BookingValidator().ValidateAndThrowAsync(bookingDto);
 
         var booking = new Booking
         {
             Id = Guid.NewGuid(),
-            User = user,
-            CaravanId = bookingDto.CaravanId,
-            RoleId = bookingDto.RoleId,
             UserId = user.Id,
-            Price = bookingDto.Price
-        };
+            Price = bookingDto.Price,
+            CaravanId=bookingDto.CaravanId, 
+            dateTime= DateTime.UtcNow,
+            
+        }; 
         await _uow.BookingRepository.AddAsync(booking);
         await _uow.CompleteAsync();
         return booking.Id;
@@ -76,11 +83,13 @@ public class BookingService(IUnitOfWork _uow) : IBookingService
         if (caravan == null)
         {
             throw new Exception("Caravan not found");
+
         }
+
         await new BookingValidator().ValidateAndThrowAsync(bookingDto);
         booking.Price = bookingDto.Price;
-        booking.CaravanId= bookingDto.CaravanId;
         booking.UserId=bookingDto.UserId;
+        booking.CaravanId = bookingDto.CaravanId;
         booking.User = user;
         await _uow.BookingRepository.UpdateAsync(booking);
         await _uow.CompleteAsync();

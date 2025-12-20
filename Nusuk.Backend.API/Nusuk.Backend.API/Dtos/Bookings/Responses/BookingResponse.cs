@@ -8,7 +8,9 @@ namespace Nusuk.Backend.API.Dtos.Bookings.Responses
         public Guid Id { get; set; }
         public decimal Price { get; set; }
         public Guid? UserId { get; set; }
-        public Guid? CaravanId { get; set; }
+        public Guid? CaravanId{get;set; }
+        public string? PackageName {  get; set; }
+      
         public static BookingResponse Transform(Booking booking)
         {
             return new BookingResponse()
@@ -16,7 +18,10 @@ namespace Nusuk.Backend.API.Dtos.Bookings.Responses
                 Id = booking.Id,
                 Price = booking.Price,
                 UserId = booking.UserId,
-                CaravanId = booking.CaravanId
+                CaravanId=booking.CaravanId,
+                PackageName =booking.Caravan.TripPackage.Package.Name,
+                
+               
             };
         }
     }

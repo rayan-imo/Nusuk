@@ -36,7 +36,7 @@ namespace Nusuk.Backend.API.Controllers
             return BookingResponse.Transform(result);
         }
         [HttpPost]
-        public async Task<ActionResult<BookingResponse>> AddAsync(BookingDto bookingDto)
+        public async Task<ActionResult<BookingResponse>> AddAsync([FromBody]BookingDto bookingDto)
         {
             await new BookingValidator().ValidateAndThrowAsync(bookingDto);
             var bookingId = await _bookingService.AddAsync(bookingDto);

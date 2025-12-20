@@ -2,22 +2,25 @@
 
 
 namespace Nusuk.Infrastructure.Data
-    {
-        public class SeedData
+{
+    public class SeedData
+    {  // Caravans
+        public readonly Guid Caravan1 = Guid.Parse("70000000-0000-0000-0000-000000000001");
+        public readonly Guid Caravan2 = Guid.Parse("70000000-0000-0000-0000-000000000002");
+        public readonly Guid Caravan3 = Guid.Parse("70000000-0000-0000-0000-000000000003");
+        // Trips
+        public readonly Guid Trip1 = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        public readonly Guid Trip2 = Guid.Parse("22222222-2222-2222-2222-222222222222");
+        public readonly Guid Trip3 = Guid.Parse("33333333-3333-3333-3333-333333333333");
+
+        // Packages
+        public readonly Guid Package1 = Guid.Parse("aaaa1111-1111-1111-1111-111111111111");
+        public readonly Guid Package2 = Guid.Parse("aaaa2222-2222-2222-2222-222222222222");
+        public readonly Guid Package3 = Guid.Parse("aaaa3333-3333-3333-3333-333333333333");
+
+        // Services
+        public readonly Guid[] Services =
         {
-            // Trips
-            public readonly Guid Trip1 = Guid.Parse("11111111-1111-1111-1111-111111111111");
-            public readonly Guid Trip2 = Guid.Parse("22222222-2222-2222-2222-222222222222");
-            public readonly Guid Trip3 = Guid.Parse("33333333-3333-3333-3333-333333333333");
-
-            // Packages
-            public readonly Guid Package1 = Guid.Parse("aaaa1111-1111-1111-1111-111111111111");
-            public readonly Guid Package2 = Guid.Parse("aaaa2222-2222-2222-2222-222222222222");
-            public readonly Guid Package3 = Guid.Parse("aaaa3333-3333-3333-3333-333333333333");
-
-            // Services
-            public readonly Guid[] Services =
-            {
             Guid.Parse("00010000-0000-0000-0000-000000000001"),
             Guid.Parse("00010000-0000-0000-0000-000000000002"),
             Guid.Parse("00010000-0000-0000-0000-000000000003"),
@@ -34,9 +37,9 @@ namespace Nusuk.Infrastructure.Data
             Guid.Parse("00030000-0000-0000-0000-000000000004")
         };
 
-            // ServiceDetail IDs
-            public readonly Guid[] ServiceDetailIds =
-            {
+        // ServiceDetail IDs
+        public readonly Guid[] ServiceDetailIds =
+        {
             Guid.Parse("50000000-0000-0000-0000-000000000001"),
             Guid.Parse("50000000-0000-0000-0000-000000000002"),
             Guid.Parse("50000000-0000-0000-0000-000000000003"),
@@ -53,39 +56,39 @@ namespace Nusuk.Infrastructure.Data
             Guid.Parse("50000000-0000-0000-0000-000000000012")
         };
 
-            // TripPackage IDs
-            public readonly Guid[] TripPackageIds =
-            {
+        // TripPackage IDs
+        public readonly Guid[] TripPackageIds =
+        {
             Guid.Parse("60000000-0000-0000-0000-000000000001"),
             Guid.Parse("60000000-0000-0000-0000-000000000002"),
             Guid.Parse("60000000-0000-0000-0000-000000000003")
         };
 
 
-            // =======================
-            // TRIPS
-            // =======================
-            public List<Trip> GetTrips() => new()
+      
+        // TRIPS
+ 
+        public List<Trip> GetTrips() => new()
         {
             new Trip { Id = Trip1, Name = "عمرة رمضان", Description = "المدة 10 أيام" },
             new Trip { Id = Trip2, Name = "برنامج الحج المتميز", Description = "المدة 20 يوم" },
             new Trip { Id = Trip3, Name = "عمرة العائلة الذهبية", Description = "المدة 14 يوم" }
         };
 
-            // =======================
-            // PACKAGES
-            // =======================
-            public List<Package> GetPackages() => new()
+        
+        // PACKAGES
+       
+        public List<Package> GetPackages() => new()
         {
             new Package { Id = Package1, Name = "باقة عمرة رمضان", TotalPrice = 12500 },
             new Package { Id = Package2, Name = "باقة الحج المتميز", TotalPrice = 35000 },
             new Package { Id = Package3, Name = "باقة عمرة العائلة الذهبية", TotalPrice = 18500 }
         };
 
-            // =======================
-            // SERVICES
-            // =======================
-            public List<Service> GetServices() => new()
+      
+        // SERVICES
+  
+        public List<Service> GetServices() => new()
         {
             // Trip 1 Services
             new Service { Id = Services[0], Name = "طيران", Description = "مباشر درجة أعمال" },
@@ -107,20 +110,20 @@ new Service { Id = Services[1], Name = "فندق", Description = "خمسة نج�
             new Service { Id = Services[11], Name = "مواصلات", Description = "سيارة خاصة" }
         };
 
-            // =======================
-            // TRIP ↔ PACKAGE
-            // =======================
-            public List<TripPackage> GetTripPackages() => new()
+        
+        // TRIP_PACKAGE
+    
+        public List<TripPackage> GetTripPackages() => new()
         {
             new TripPackage { Id = TripPackageIds[0], TripId = Trip1, PackageId = Package1 },
             new TripPackage { Id = TripPackageIds[1], TripId = Trip2, PackageId = Package2 },
             new TripPackage { Id = TripPackageIds[2], TripId = Trip3, PackageId = Package3 }
         };
 
-            // =======================
-            // PACKAGE ↔ SERVICE
-            // =======================
-            public List<ServiceDetail> GetServiceDetails() => new()
+       
+        // PACKAGE_SERVICE
+
+        public List<ServiceDetail> GetServiceDetails() => new()
         {
             // Package1 (Trip1)
             new ServiceDetail { Id = ServiceDetailIds[0], PackageId = Package1, ServiceId = Services[0] },
@@ -140,7 +143,25 @@ new Service { Id = Services[1], Name = "فندق", Description = "خمسة نج�
             new ServiceDetail { Id = ServiceDetailIds[10], PackageId = Package3, ServiceId = Services[10] },
             new ServiceDetail { Id = ServiceDetailIds[11], PackageId = Package3, ServiceId = Services[11] }
         };
-        }
+        public List<Caravan> GetCaravans() => new()
+        {
+            new Caravan
+            {
+               Id = Caravan1,
+              TripPackageId=TripPackageIds[0],
+            },
+            new Caravan
+            {
+              Id = Caravan2,
+              TripPackageId=TripPackageIds[1]
+            },
+           new Caravan
+           {
+             Id = Caravan3,
+             TripPackageId=TripPackageIds[2]
+           }
+        };
+    }
 }
 
 

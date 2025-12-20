@@ -7,8 +7,6 @@ public class RegisterModel
 {
     [MaxLength(20)]
     public required string Name {  get; set; }
-   // [MaxLength(20)]
- //   public required string LastName { get; set; }
 
     [EmailAddress(ErrorMessage = "Invalid email format.")]
     [MaxLength(50)]
@@ -17,8 +15,9 @@ public class RegisterModel
     [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$",
            ErrorMessage = "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character.")]
     public required string Password { get; set; }
-  
-    
+    public required string Phone { get; set; }
+    public required string Nationality { get; set; }
+    public required string Gendre { get; set; }
 
 
 }

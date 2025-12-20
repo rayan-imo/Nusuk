@@ -10,6 +10,7 @@ namespace Nusuk.Backend.API.Dtos.Caravans.Responses
         public DateTime? ReturnDate { get; set; }
         public string? DepartureCity { get; set; }
         public bool IsCompleted { get; set; }
+        public Guid? TripPackageId { get; set; }
         public static CaravanResponse Transform(Caravan caravan)
         {
             return new CaravanResponse
@@ -18,7 +19,9 @@ namespace Nusuk.Backend.API.Dtos.Caravans.Responses
                 DepartureDate = caravan.DepartureDate,
                 ReturnDate = caravan.ReturnDate,
                 DepartureCity = caravan.DepartureCity,
-                IsCompleted = caravan.IsCompleted
+                IsCompleted = caravan.IsCompleted,
+                TripPackageId = caravan.TripPackageId
+               
             };
         }
     }

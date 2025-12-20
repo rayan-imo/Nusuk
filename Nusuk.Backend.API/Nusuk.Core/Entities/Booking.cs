@@ -8,10 +8,11 @@ public class Booking: BaseEntity
      public decimal Price {  get; set; }
     public AmountMethod AmountMethod { get; set; }
     public bool IsPaid {  get; set; }
+    public DateTime dateTime { get; set; }= DateTime.Now;
     public User? User { get; set; }
     public Guid UserId {  get; set; }
     public Caravan? Caravan { get; set; }
-    public Guid CaravanId {  get; set; }
+    public Guid? CaravanId {  get; set; }
     public Role? Role { get; set; }
     public Guid? RoleId { get; set; }
    

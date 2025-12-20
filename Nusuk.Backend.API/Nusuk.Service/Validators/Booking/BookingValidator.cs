@@ -14,6 +14,8 @@ namespace Nusuk.Services.Validators.Booking
 
             RuleFor(x => x.Price)
                 .GreaterThan(0).WithMessage("يجب أن يكون السعر أكبر من الصفر ");
-            }
+          
+
+        }
     }
-}
+} 

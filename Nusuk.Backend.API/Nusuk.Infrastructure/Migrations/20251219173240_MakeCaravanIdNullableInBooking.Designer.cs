@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nusuk.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Nusuk.Infrastructure.Data;
 namespace Nusuk.Infrastructure.Migrations
 {
     [DbContext(typeof(NusukDbContext))]
-    partial class NusukDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251219173240_MakeCaravanIdNullableInBooking")]
+    partial class MakeCaravanIdNullableInBooking
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +66,6 @@ namespace Nusuk.Infrastructure.Migrations
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("dateTime")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -125,29 +125,6 @@ namespace Nusuk.Infrastructure.Migrations
                     b.HasIndex("TripPackageId");
 
                     b.ToTable("Caravans");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("70000000-0000-0000-0000-000000000001"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsCompleted = false,
-                            TripPackageId = new Guid("60000000-0000-0000-0000-000000000001")
-                        },
-                        new
-                        {
-                            Id = new Guid("70000000-0000-0000-0000-000000000002"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsCompleted = false,
-                            TripPackageId = new Guid("60000000-0000-0000-0000-000000000002")
-                        },
-                        new
-                        {
-                            Id = new Guid("70000000-0000-0000-0000-000000000003"),
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsCompleted = false,
-                            TripPackageId = new Guid("60000000-0000-0000-0000-000000000003")
-                        });
                 });
 
             modelBuilder.Entity("Nusuk.Core.Entities.Package", b =>

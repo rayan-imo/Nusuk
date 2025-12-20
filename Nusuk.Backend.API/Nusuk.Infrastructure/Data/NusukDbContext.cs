@@ -44,6 +44,7 @@ public class NusukDbContext : DbContext
         modelBuilder.Entity<Service>().HasData(seed.GetServices());
         modelBuilder.Entity<TripPackage>().HasData(seed.GetTripPackages());
         modelBuilder.Entity<ServiceDetail>().HasData(seed.GetServiceDetails());
+        modelBuilder.Entity<Caravan>().HasData(seed.GetCaravans());
 
 
     }

@@ -31,6 +31,9 @@ public class AuthService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
             Email = model.Email,
             Name = model.Name,
             Password = haspassword,
+            Gendre=model.Gendre,
+            Nationality=model.Nationality,
+            Phone=model.Phone,
         };
         await _uow.UsersRepository.AddAsync(user);
 
@@ -43,7 +46,6 @@ public class AuthService(IUnitOfWork _uow, IPasswordHasher _passwordHasher,
             Email = model.Email,
             Name = model.Name,
             IsAuthenticated = true,
-         
             Token = jwt,
             Message = "Registration successful"
         };
